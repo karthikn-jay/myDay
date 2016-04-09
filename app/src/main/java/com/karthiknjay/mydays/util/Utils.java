@@ -1,5 +1,7 @@
 package com.karthiknjay.mydays.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -8,12 +10,16 @@ import java.util.Date;
  */
 public class Utils {
 
-    public static final int LAST_DAY_YEAR = 2016;
-    public static final int LAST_DAY_MONTH = 03;
-    public static final int LAST_DAY_DAY = 29;
-    public static final int LAST_DAY_HOUR = 07;
-    public static final int LAST_DAY_MINUTE = 00;
-    public static final int LAST_DAY_SECOND = 00;
+    public static final String DATEFORMAT_YYYYMMDD_HHMMSS = "yyyy-MM-dd hh:mm:ss";
+
+    public static final String LAST_DAY = "2016-04-29 07:00:00";
+
+    public static Calendar getCalendar(String timeString, String format) throws ParseException {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        cal.setTime(sdf.parse(timeString));
+        return cal;
+    }
 
     public static int daysBetween(Calendar day1, Calendar day2){
         Calendar dayOne = (Calendar) day1.clone(),
@@ -40,32 +46,6 @@ public class Utils {
 
             return extraDays - dayTwo.get(Calendar.DAY_OF_YEAR) + dayOneOriginalYearDays ;
         }
-    }
-
-    public static int getTimeRemaining(Date dt)
-    {
-        Calendar sDate = toCalendar(dt.getTime());
-        Calendar eDate = toCalendar(System.currentTimeMillis());
-
-        // Get the represented date in milliseconds
-        long milis1 = sDate.getTimeInMillis();
-        long milis2 = eDate.getTimeInMillis();
-
-        // Calculate difference in milliseconds
-        long diff = Math.abs(milis2 - milis1);
-
-        return (int)(diff / (24 * 60 * 60 * 1000));
-    }
-
-    private static Calendar toCalendar(long timestamp)
-    {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(timestamp);
-        calendar.set(Calendar.HOUR, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        return calendar;
     }
 
 }

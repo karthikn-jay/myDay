@@ -7,7 +7,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,18 +15,14 @@ import android.widget.TextView;
 import com.karthiknjay.mydays.R;
 import com.karthiknjay.mydays.util.Utils;
 
+import java.text.ParseException;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String lastDay = "29/04/2016";
-
-    private static final String FORMAT = "%02d:%02d:%02d";
-
-    int seconds , minutes;
+    private static final String FORMAT_DAY = "%02d Days";
+    private static final String FORMAT_TIME = "%02d Hr %02d min %02d sec";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,39 +41,37 @@ public class MainActivity extends AppCompatActivity {
         });
         fab.hide();
 
-        Calendar lastDay = Calendar.getInstance();
-        lastDay.set(Calendar.YEAR, Utils.LAST_DAY_YEAR);
-        lastDay.set(Calendar.MONTH, Utils.LAST_DAY_MONTH);
-        lastDay.set(Calendar.DAY_OF_MONTH, Utils.LAST_DAY_DAY);
-        lastDay.set(Calendar.HOUR_OF_DAY, Utils.LAST_DAY_HOUR);
-        lastDay.set(Calendar.MINUTE, Utils.LAST_DAY_MINUTE);
-        lastDay.set(Calendar.SECOND, Utils.LAST_DAY_SECOND);
-
-        Date dt = lastDay.getTime();
-        Log.d("myDays", "Date: " + dt);
+        Calendar lastDay = null;
+        try {
+            lastDay = Utils.getCalendar(Utils.LAST_DAY, Utils.DATEFORMAT_YYYYMMDD_HHMMSS);
+        } catch (ParseException e) {
+            lastDay = Calendar.getInstance();
+            e.printStackTrace();
+        }
 
         final TextView txtDays = (TextView) findViewById(R.id.txtDays);
         final TextView txtTime = (TextView) findViewById(R.id.txtTime);
-        ////txtDays.setText( Integer.toString(Utils.getTimeRemaining(dt)));
-        //txtDays.setText( Integer.toString(Utils.daysBetween(Calendar.getInstance(), lastDay)));
-
 
         new CountDownTimer(lastDay.getTimeInMillis(), 1000) { // adjust the milli seconds here
 
             public void onTick(long millisUntilFinished) {
-                int days = (int) (millisUntilFinished / (1000*60*60*24));
+                Calendar today = Calendar.getInstance();
 
-                //int days = (int) ((millisUntilFinished / (1000*60*60*24)) % 7);
-                int weeks = (int) (millisUntilFinished / (1000*60*60*24*7));
+                Calendar lastDay = Calendar.getInstance();
+                lastDay.setTimeInMillis(millisUntilFinished);
 
-                txtDays.setText(""+String.format("%02d", days));
+                txtDays.setText(""+String.format(FORMAT_DAY, Utils.daysBetween(today, lastDay)));
 
-                txtTime.setText(""+String.format(FORMAT,
-                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
-                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
-                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+                long diff = 0;
+
+                diff = lastDay.getTimeInMillis() - today.getTimeInMillis();
+
+                txtTime.setText(""+String.format(FORMAT_TIME,
+                        TimeUnit.MILLISECONDS.toHours(diff) - TimeUnit.MILLISECONDS.toHours(diff),
+                        TimeUnit.MILLISECONDS.toMinutes(diff) - TimeUnit.HOURS.toMinutes(
+                                TimeUnit.MILLISECONDS.toHours(diff)),
+                        TimeUnit.MILLISECONDS.toSeconds(diff) - TimeUnit.MINUTES.toSeconds(
+                                TimeUnit.MILLISECONDS.toMinutes(diff))));
             }
 
             public void onFinish() {

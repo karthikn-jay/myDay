@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:key="lastDay"
+        android:title="Last Day"
+        android:inputType="textUri"/>
+    <CheckBoxPreference android:title="Set Last Day" android:key="active"/>
+
+</PreferenceScreen>

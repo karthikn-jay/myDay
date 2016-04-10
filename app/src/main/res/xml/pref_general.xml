@@ -30,13 +30,13 @@
         android:negativeButtonText="@null"
         android:positiveButtonText="@null" />
 
-    <com.karthiknjay.mydays.util.DatePreference
+    <com.karthiknjay.mydays.dialog.DatePreference
         android:key="lastDay"
         android:title="Last working day"
         android:defaultValue="2016-04-29"
         android:summary="Last day"/>
 
-    <com.karthiknjay.mydays.util.TimePreference
+    <com.karthiknjay.mydays.dialog.TimePreference
         android:key="lastTime"
         android:title="Last working time"
         android:defaultValue="07:00 pm"

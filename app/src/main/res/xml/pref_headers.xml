@@ -17,7 +17,7 @@
         android:title="@string/pref_header_data_sync"
         android:icon="@drawable/ic_sync_black_24dp" />
 
-    <com.karthiknjay.mydays.util.DatePreference
+    <com.karthiknjay.mydays.dialog.DatePreference
         android:key="keyname"
         android:title="Title of the preference"
         android:defaultValue="2014-08-01"

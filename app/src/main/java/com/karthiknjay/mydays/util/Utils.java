@@ -10,9 +10,12 @@ import java.util.Date;
  */
 public class Utils {
 
-    public static final String DATEFORMAT_YYYYMMDD_HHMMSS = "yyyy-MM-dd hh:mm:ss";
+    public static final String DATEFORMAT_YYYYMMDD_HHMMSS = "yyyy-MM-dd HH:mm";
 
-    public static final String LAST_DAY = "2016-04-29 07:00:00";
+    public static final String DEFAULT_LAST_DAY = "2016-04-29";
+    public static final String DEFAULT_LAST_TIME = "07:00";
+
+    public static final String DEFAULT_DAY_DEBUG = "2016-04-29 19:00";
 
     public static Calendar getCalendar(String timeString, String format) throws ParseException {
         Calendar cal = Calendar.getInstance();

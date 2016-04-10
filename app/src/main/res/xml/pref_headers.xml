@@ -7,7 +7,7 @@
         android:title="@string/pref_header_general"
         android:icon="@drawable/ic_info_black_24dp" />
 
-    <header
+    <!--<header
         android:fragment="com.karthiknjay.mydays.activity.SettingsActivity$NotificationPreferenceFragment"
         android:title="@string/pref_header_notifications"
         android:icon="@drawable/ic_notifications_black_24dp" />
@@ -15,12 +15,6 @@
     <header
         android:fragment="com.karthiknjay.mydays.activity.SettingsActivity$DataSyncPreferenceFragment"
         android:title="@string/pref_header_data_sync"
-        android:icon="@drawable/ic_sync_black_24dp" />
-
-    <com.karthiknjay.mydays.dialog.DatePreference
-        android:key="keyname"
-        android:title="Title of the preference"
-        android:defaultValue="2014-08-01"
-        android:summary="Summary"/>
+        android:icon="@drawable/ic_sync_black_24dp" />-->
 
 </preference-headers>

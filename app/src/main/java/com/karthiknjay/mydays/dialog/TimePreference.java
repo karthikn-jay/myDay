@@ -16,9 +16,12 @@ import android.widget.TimePicker;
 // Based on http://stackoverflow.com/a/7484289/922168
 
 public class TimePreference extends DialogPreference {
+
     private int mHour = 0;
     private int mMinute = 0;
+
     private TimePicker picker = null;
+
     private final String DEFAULT_VALUE = "00:00";
 
     public static int getHour(String time) {

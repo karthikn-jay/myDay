@@ -18,10 +18,12 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.karthiknjay.mydays.R;
+import com.karthiknjay.mydays.util.Constants;
 import com.karthiknjay.mydays.util.Utils;
 
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
@@ -55,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPref.registerOnSharedPreferenceChangeListener(this);
 
+        setDayName(sharedPref);
+
         txtDays = (TextView) findViewById(R.id.txtDays);
         txtTime = (TextView) findViewById(R.id.txtTime);
 
@@ -63,9 +67,16 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+    public void onSharedPreferenceChanged(SharedPreferences sharedPref, String key) {
         if ("lastDay".equals(key) || "lastTime".equals(key))
-            runCountDown(prefs);
+            runCountDown(sharedPref);
+        else if (Constants.SETTINGS_KEY_DAY_NAME.equals(key))
+            setDayName(sharedPref);
+    }
+
+    private void setDayName(SharedPreferences sharedPref) {
+        String dayName = sharedPref.getString(Constants.SETTINGS_KEY_DAY_NAME, Constants.SETTINGS_DEFAULT_DAY_NAME);
+        this.setTitle(dayName);
     }
 
     private void runCountDown(SharedPreferences sharedPref) {
@@ -96,21 +107,23 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 Calendar lastDay = Calendar.getInstance();
                 lastDay.setTimeInMillis(millisUntilFinished);
 
-                txtDays.setText(""+String.format(FORMAT_DAY, Utils.daysBetween(today, lastDay)));
+                Date todayDt = today.getTime();
+                Date lastDt = lastDay.getTime();
 
-                long diff = 0;
+                long diff  = lastDt.getTime() - todayDt.getTime();
 
-                diff = lastDay.getTimeInMillis() - today.getTimeInMillis();
+                long diffSeconds = diff / 1000 % 60;
+                long diffMinutes = diff / (60 * 1000) % 60;
+                long diffHours = diff / (60 * 60 * 1000) % 24;
+                long diffDays = diff / (24 * 60 * 60 * 1000);
 
-                txtTime.setText(""+String.format(FORMAT_TIME,
-                        TimeUnit.MILLISECONDS.toHours(diff) - TimeUnit.MILLISECONDS.toHours(diff),
-                        TimeUnit.MILLISECONDS.toMinutes(diff) - TimeUnit.HOURS.toMinutes(
-                                TimeUnit.MILLISECONDS.toHours(diff)),
-                        TimeUnit.MILLISECONDS.toSeconds(diff) - TimeUnit.MINUTES.toSeconds(
-                                TimeUnit.MILLISECONDS.toMinutes(diff))));
+                txtDays.setText(""+String.format(FORMAT_DAY, diffDays));
+
+                txtTime.setText(""+String.format(FORMAT_TIME, diffHours, diffMinutes, diffSeconds));
             }
 
             public void onFinish() {
+                txtDays.setText("Done");
                 txtTime.setText("");
             }
         };
@@ -161,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         // set title
         alertDialogBuilder.setTitle("");
 
-        String msg = "KG Last Days - v1.0 \n\n\n© 2016 J.Karthikeyan";
+        String msg = "KG Last Day - v1.0 \n\n\n© 2016 J.Karthikeyan";
 
         // set dialog message
         alertDialogBuilder

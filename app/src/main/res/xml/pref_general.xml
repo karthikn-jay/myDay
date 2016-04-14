@@ -30,15 +30,24 @@
         android:negativeButtonText="@null"
         android:positiveButtonText="@null" />-->
 
+    <EditTextPreference
+        android:key="KEY_DAY_NAME"
+        android:title="@string/pref_title_day_name"
+        android:defaultValue="@string/pref_default_day_name"
+        android:inputType="textCapSentences"
+        android:capitalize="words"
+        android:singleLine="true"
+        android:maxLines="1" />
+
     <com.karthiknjay.mydays.dialog.DatePreference
         android:key="lastDay"
-        android:title="Last working day"
+        android:title="Set Date of the day"
         android:defaultValue="2016-04-29"
         android:summary="Last day"/>
 
     <com.karthiknjay.mydays.dialog.TimePreference
         android:key="lastTime"
-        android:title="Last working time"
+        android:title="Set Time of the day"
         android:defaultValue="07:00 pm"
         android:summary="Last time"/>
 

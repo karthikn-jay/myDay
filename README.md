@@ -1,2 +1,2 @@
-# my-day
+# myDay
 Track a day

@@ -1,1 +1,2 @@
-# kg-last-day
+# my-day
+Track a day
